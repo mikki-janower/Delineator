@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /*universal type styling*/
+        .info, label, button, input{
+            font-size:14px;
+            font-family: monospace;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            top:0;
+            left:0;
+        }
+
+        #colorPicker {
+            position: absolute;
+            background-color: white;
+            padding: 24px;
+            border-radius: 0;
+            margin: 0 auto;
+            transition:.2s ease;
+            width: 328.5px;
+            height: 250.5px;
+            border: .8px solid #e4e4e4;
+        }
+
+        #grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(12px, 1fr));
+            grid-gap: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            transition: .2s ease;
+        }
+
+        .grid-square {
+            width: 12px;
+            height: 12px;
+            border: 0.5px solid;
+            cursor: crosshair;
+            margin: 0 auto;
+        }
+        button{
+            border:.5px solid #c4c4c4;
+            border-radius:0px;
+            background:transparent;
+            height:24px;
+            cursor:pointer;
+            padding-inline:12px;
+            padding-block:0px;
+        }
+        .buttons{
+            margin-top:12px;
+        }
+
+        h1{
+            font-family: monospace;
+            font-size:24px;
+            line-height:1;
+            margin-block-start:0;
+            margin-block-end:24px;
+            font-weight:normal;
+        }
+
+        .color-pickers {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+    }
+
+    label{
+            line-height:20px;
+        }
+
+        input{
+            border:none;
+            height:24px;
+            background-color:transparent;
+            padding-inline:0px;
+            padding-block:0px;
+            padding:0px;
+            margin:0px;
+            appearance: none; /* Remove browser default styling */
+        }
+        input:focus, textarea {
+        outline: none !important;
+        }
+        input[type=number]{
+            border-bottom:.5px #c4c4c4 solid;
+            margin-bottom:25px;
+        }
+
+    .color-picker {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+
+    }
+
+    .color-picker label {
+        margin-right: 12px;
+    }
+
+    .color-picker input {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%; /* Make it a circle */
+}
+
+/* Style the circle input with a background color */
+    .color-picker input[type="color"] {
+    background-color: transparent;
+}
+
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <div id="colorPicker" class="borderChange">
+            <h1>Delineator</h1>
+        
+            <div id="grid-size-input">
+                <label for="gridSizeInput">Delineation:</label>
+                <input type="number" id="gridSizeInput" min="6" max="36" value="12">
+                <button id="changeGridSizeButton">Change</button>
+            </div>
+        
+            <div class="color-pickers">
+                <div class="color-picker">
+                    <label for="fillColorPicker">Fill Color</label>
+                    <input type="color" id="fillColorPicker" value="#000000">
+                </div>
+                <div class="color-picker">
+                    <label for="bgColorPicker">Background Color</label>
+                    <input type="color" id="bgColorPicker" value="#FFFFFF">
+                </div>
+                <div class="color-picker">
+                    <label for="gridLineColorPicker">Gridline Color</label>
+                    <input type="color" id="gridLineColorPicker" value="#e4e4e4">
+                </div>
+            </div>
+        
+            <div class="buttons">
+                <button id="resetButton">Clear</button>
+                <button id="downloadButton">Download</button>
+            </div>
+        </div>
+
+        <div id="grid-container"></div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script>
+
+const gridContainer = document.getElementById('grid-container'); 
+const colorPicker = document.getElementById('colorPicker');
+const downloadButton = document.getElementById('downloadButton');
+let isDrawing = false; // Define isDrawing
+
+        // Set background color
+        bgColorPicker.addEventListener('input', () => {
+            gridContainer.style.backgroundColor = bgColorPicker.value;
+            colorPicker.style.backgroundColor=bgColorPicker.value;
+        });
+
+          // Update grid line color when the picker value changes
+          gridLineColorPicker.addEventListener('input', () => {
+            const gridSquares = document.querySelectorAll('.grid-square');
+            const borderChange = document.querySelectorAll('borderChange');
+            gridSquares.forEach((square) => {
+                square.style.borderColor = gridLineColorPicker.value;
+            });
+            colorPicker.style.borderColor= gridLineColorPicker.value; // set colorpicker border to match gridlines
+            borderChange.style.borderColor= gridLineColorPicker.value; // set border of things classed 'borderchange' to match gridlines
+        });
+
+             // Add download functionality
+            downloadButton.addEventListener('click', () => {
+            colorPicker.style.display = 'none';
+            html2canvas(gridContainer).then((canvas) => {
+                const a = document.createElement('a');
+                a.href = canvas.toDataURL('image/png');
+                a.download = 'delineator.png';
+                a.click();
+                colorPicker.style.display = 'block';
+            });
+        });
+
+        // Function to reset the canvas by clearing the grid
+        function resetCanvas() {
+            const gridSquares = document.querySelectorAll('.grid-square');
+            gridSquares.forEach((square) => {
+            square.style.backgroundColor = ''; // Clear the background color
+        });
+}
+
+// Add a click event listener to the "Reset" button
+const resetButton = document.getElementById('resetButton');
+resetButton.addEventListener('click', resetCanvas);
+
+// Create the grid
+        function createGrid(gridSize) {
+        gridContainer.innerHTML = ''; // Clear the existing grid
+
+            const numRows = Math.ceil(window.innerHeight / gridSize);
+            const numCols = Math.ceil(window.innerWidth / gridSize);
+
+            gridContainer.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+            gridContainer.style.gridTemplateRows = `repeat(${numRows}, 1fr)`;
+
+            for (let i = 0; i < numRows; i++) {
+                for (let j = 0; j < numCols; j++) {
+                    const gridSquare = document.createElement('div');
+                    gridSquare.className = 'grid-square';
+                    gridSquare.style.borderColor = gridLineColorPicker.value;
+                    gridSquare.style.width = gridSize + 'px';
+                    gridSquare.style.height = gridSize + 'px';
+
+                    gridSquare.addEventListener('mousedown', () => {
+                        isDrawing = true;
+                        gridSquare.style.backgroundColor = fillColorPicker.value;
+                    });
+                    gridSquare.addEventListener('mouseover', () => {
+                        if (isDrawing) {
+                            gridSquare.style.backgroundColor = fillColorPicker.value;
+                        }
+                    });
+                    gridSquare.addEventListener('mouseup', () => {
+                        isDrawing = false;
+                    });
+
+                    gridContainer.appendChild(gridSquare);
+                }
+            }
+        }
+    // Update the grid size when the user changes the gridSize input value
+        function updateGridSize() {
+            const gridSizeInput = document.getElementById('gridSizeInput');
+            const gridSize = parseInt(gridSizeInput.value);
+
+            createGrid(gridSize);
+        }
+
+    // Update the grid size when the "Change" button is clicked
+        const changeGridSizeButton = document.getElementById('changeGridSizeButton');
+        changeGridSizeButton.addEventListener('click', updateGridSize);
+
+   // Initial grid creation
+        createGrid(12);
+
+// Function to update colorPicker's specs based on gridSize
+function updateColorPickerSize(gridSize) {
+
+    //set colorPicker's new position
+    const newTop = newLeft = gridSize + .5;
+    // Set the new CSS properties for colorPicker's position
+    document.getElementById('colorPicker').style.top = newTop + 'px';
+    document.getElementById('colorPicker').style.left = newLeft + 'px';
+}
+
+
+// Initial call to set the default size based on gridSize
+    updateColorPickerSize(12);
+
+  // Add a click event listener to the 'change' button
+  document.getElementById('changeGridSizeButton').addEventListener('click', function () {
+    const newGridSize = parseFloat(document.getElementById('gridSizeInput').value);
+    updateColorPickerSize(newGridSize);
+});
+
+
+
+    </script>
+</body>
+</html>
