@@ -30,8 +30,8 @@
             border-radius: 0;
             margin: 0 auto;
             transition:.2s ease;
-            width: 328.5px;
-            height: 250.5px;
+            width: 329px;
+            height: 238px;
             border: .8px solid #e4e4e4;
         }
 
@@ -63,6 +63,7 @@
         }
         .buttons{
             margin-top:12px;
+            margin-bottom:12px;
         }
 
         h1{
@@ -70,9 +71,14 @@
             font-size:24px;
             line-height:1;
             margin-block-start:0;
-            margin-block-end:24px;
+            margin-block-end:6px;
             font-weight:normal;
         }
+
+    .info, .info a{
+        color: #c4c4c4;
+        margin-bottom:30px;
+}
 
         .color-pickers {
         display: flex;
@@ -99,13 +105,13 @@
         }
         input[type=number]{
             border-bottom:.5px #c4c4c4 solid;
-            margin-bottom:25px;
+            margin-bottom:12px;
         }
 
     .color-picker {
         display: flex;
         align-items: center;
-        margin-bottom: 12px;
+        margin-bottom: 6px;
 
     }
 
@@ -181,6 +187,7 @@
     <div id="canvas-container">
         <div id="colorPicker">
             <h1>Delineator</h1>
+            <div class="info">By <a href="https://mikki.studio" target="_blank">Mikki Janower</a></div>
     
             <div id="grid-size-input">
                 <label for="gridSizeInput">Line Spacing:</label>
