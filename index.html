@@ -134,14 +134,30 @@
     }*/
 input[type="color" i] {
       border-radius: 50%;
-      inline-size: 20px;
+      inline-size: 20px !important;
+      block-size: 20px !important;
       padding:0px;
-      block-size: 20px;
-      border: .5p solid rgba(0,0,0,0.3);
+      border: .5px solid rgba(0,0,0,0.3);
+      border-style:solid;
+      border-width:.5px;
+      border-color:rgba(0,0,0,0.3);
+}
+input[type="color" i]::-webkit-color-swatch,
+input[type="color" i]::-moz-color-swatch {
+    border-radius: 50%;
+    width:20px !important;
+    height:20px !important;
 }
 /* Style the circle input with a background color */
     .color-picker input[type="color"] {
     background-color: transparent;
+    inline-size: 20px !important;
+    block-size: 20px !important;
+    padding:0px;
+    border: .5px solid rgba(0,0,0,0.3);
+    border-style:solid;
+    border-width:.5px;
+    border-color:rgba(0,0,0,0.3);
 }
 /*------------mobile overlay------------------*/
     #mobile-overlay {
