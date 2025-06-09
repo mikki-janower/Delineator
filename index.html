@@ -132,11 +132,12 @@
         border-radius: 50%;
         border:.5px solid rgba(0,0,0,0.3);
     }*/
+/* chrome: the "outer border" (idk how this is different from the wrapper tbh)*/
 input[type="color" i] {
       border-radius: 50%;
       inline-size: 20px !important;
       block-size: 20px !important;
-      padding:0px;
+      padding:0px 0px;
       border: .5px solid rgba(0,0,0,0.3);
       border-style:solid;
       border-width:.5px;
@@ -144,9 +145,18 @@ input[type="color" i] {
 }
 input[type="color" i]::-webkit-color-swatch,
 input[type="color" i]::-moz-color-swatch {
+    padding: 0px 0px;
     border-radius: 50%;
     width:20px !important;
     height:20px !important;
+}
+/* chrome: the outer swatch wrapper*/
+input[type="color" i]::-webkit-color-swatch-wrapper {
+    padding: 0px 0px;
+    border-radius: 50%;
+    inline-size: 20px !important;
+    block-size: 20px !important;
+    border:none !important;
 }
 /* Style the circle input with a background color */
     .color-picker input[type="color"] {
