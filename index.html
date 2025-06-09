@@ -132,13 +132,6 @@
         margin-right: 8px;
     }
 
-  /*  #fillColorPicker, #bgColorPicker, #gridLineColorPicker{
-        width: 20px;
-        height: 20px;
-        padding:0px;
-        border-radius: 50%;
-        border:.5px solid rgba(0,0,0,0.3);
-    }*/
 /* chrome: the "outer border" (idk how this is different from the wrapper tbh)*/
 /*input[type="color" i] {
       border-radius: 50%;
@@ -168,9 +161,11 @@ input[type="color" i]::-webkit-color-swatch-wrapper {
 /* Style the circle input with a background color */
 .color-picker input[type="color"], input[type="color" i]::-webkit-color-swatch,
 input[type="color" i]::-moz-color-swatch {
+    overflow:hidden;
+    border-radius:50%;
     background-color: transparent;
-    inline-size: 20px !important;
-    block-size: 20px !important;
+    width:24px;
+    height:24px;
     padding:0px;
     border: none;
 }
