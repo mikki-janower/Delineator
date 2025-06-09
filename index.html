@@ -125,18 +125,20 @@
         margin-right: 8px;
     }
 
-    .color-picker input {
-    width: 24px;
-    height: 24px;
-    border-radius: 0px; /* Make it a circle */
-}
-
-    #fillColorPicker, #bgColorPicker, #gridLineColorPicker{
-        width: 24px;
-        height: 24px;
-        border-radius: 50%; /* Make it a circle */
+  /*  #fillColorPicker, #bgColorPicker, #gridLineColorPicker{
+        width: 20px;
+        height: 20px;
+        padding:0px;
+        border-radius: 50%;
         border:.5px solid rgba(0,0,0,0.3);
-    }
+    }*/
+input[type="color" i] {
+      border-radius: 50%;
+      inline-size: 20px;
+      padding:0px;
+      block-size: 20px;
+      border: .5p solid rgba(0,0,0,0.3);
+}
 /* Style the circle input with a background color */
     .color-picker input[type="color"] {
     background-color: transparent;
